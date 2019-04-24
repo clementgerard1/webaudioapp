@@ -89,7 +89,7 @@ $(function(){
 
 				var request = new XMLHttpRequest();
 				request.responseType = 'arraybuffer';
-			  request.open('POST', "/IR" + i + ".mp3", true);
+			  request.open('POST', "/IRS/IR" + i + ".mp3", true);
 			  request.onreadystatechange = function(event){
 				    if (this.readyState === XMLHttpRequest.DONE) {
 				        if (this.status === 200) {
