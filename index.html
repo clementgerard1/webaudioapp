@@ -1,0 +1,187 @@
+<!doctype html>
+
+<html lang="en">
+
+	<head>
+
+	  <meta charset="utf-8">
+
+	  <title>Real time audio discover app</title>
+	  <meta name="description" content="Découverte du temps réel">
+	  <meta name="author" content="Clément Gérard">
+	  <meta name="viewport" content="width=device-width">
+	  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
+
+	  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+	  <link rel="stylesheet" href="styles.css">
+
+	</head>
+
+	<body>
+
+		<div class="error">
+			<div>
+				<h2>ERREUR</h2>
+				<p></p>
+			</div>
+		</div>
+
+		<div class="loading">
+			<div>
+				<i class="fas fa-sync fa-spin"></i>
+			</div>
+		</div>
+
+
+	  <div class="container">
+
+	  	<h1>REAL TIME AUDIO DISCOVER APP</h1>
+	  	<p>The latency with the microphone depends on your browser / device</p>
+	  	<p>Please pay attention to the <a target="_blank" href="https://en.wikipedia.org/wiki/Audio_feedback">Larsen Effect</a>. You should use external speakers</p>
+
+	  	<div id="firstline">
+	  		<div class="input">
+	  			<h2>Input<br/>volume</h2>
+	  			<svg id="volumeInput">
+	  				<rect width="200" height="15" fill="white" ></rect>
+	  			</svg>
+	  		</div>
+	  		<div class="toggles">
+		  		<div class="multidelaytoggle">
+		  			<p>Multi-delay<button class="btn btn-default off">OFF</button></p>
+		  		</div>
+		  		<div class="reverbtoggle">
+		  			<p>Reverberation<button class="btn btn-default off">OFF</button></p>
+		  		</div>
+		  		<div class="graintoggle">
+		  			<p>Granulation<button class="btn btn-default off">OFF</button></p>
+		  		</div>
+		  		<!--<div class="graintoggle">
+		  			<p>Record<button style="width:56.494px;padding-left:3.5px" class="btn btn-default off">START</button></p>
+		  		</div>-->
+		  		<div class="record">
+		  			
+		  		</div>
+		  	</div>
+	  		<div class="output">
+	  			<h2>Master<br/>volume</h2>
+	  			<svg id="volumeOutput">
+	  				<rect width="200" height="15" fill="white"></rect>
+	  			</svg>
+	  		</div>
+	  	</div>
+
+	  	<div id="menu">
+	  		<div class="item1 selected"><p>Multi-delay</div>
+	  		<div class="item2"><p>Reverberation</p></div>
+	  		<div class="item3"><p>Granulation</p></div>
+	  	</div>
+
+	  	<div id="secondLine">
+	  		<div id="multidelay" class="selected">
+	  			<h2>Multi-delay <a target="_blank" href="https://en.wikipedia.org/wiki/Delay_(audio_effect)">?</a></h2>
+	  			<div>
+		  			<div class="settings">
+		  				<div class="tempo">
+			  				<label>Tempo</label>
+			  				<input class="form-control" type="number" value="120" disabled>
+			  			</div>
+			  			<div>
+			  				<label>Size</label>
+			  				<div class="svgcontainer">
+			  					<svg control="size">
+			  						<rect width="100%" height="1" y="16"></rect>
+			  						<circle cx="50%" r="7" cy="17"></rect>
+			  					</svg>
+			  				</div>
+			  			</div>
+			  			<div>
+			  				<label>Echo</label>
+			  				<div class="svgcontainer">
+			  					<svg control="feedback">
+			  						<rect width="100%" height="1" y="16"></rect>
+			  						<circle cx="50%" r="7" cy="17"></rect>
+			  					</svg>
+			  				</div>
+			  			</div>
+			  			<div>
+			  				<button class="btn btn-default" disabled>Generate random pattern</button>
+			  			</div>
+		  			</div>
+		  			<div class="volume">
+		  				<h2>Volume</h2>
+		  				<svg id="volumeDelay">
+			  				<rect width="200" height="15" fill="white"></rect>
+			  			</svg>
+		  			</div>
+		  		</div>
+	  		</div>
+	  		<div id="reverb">
+	  			<h2>Reverberation <a target="_blank" href="https://en.wikipedia.org/wiki/Reverberation">?</a> <span style="font-size:10px">- Need a powerful device</span></h2>
+	  			<div>
+		  			<div class="settings">
+			  			<button disabled class="btn btn-default">Tiny</button>
+			  			<button disabled class="btn btn-default">Small</button>
+			  			<button disabled class="btn btn-default">Medium</button>
+			  			<button disabled class="btn btn-default selected">Large</button>
+			  			<button disabled class="btn btn-default">Very Large</button>
+			  			<button class="btn btn-default">Gigantic</button>
+			  		</div>
+		  			<div class="volume">
+		  				<h2>Volume</h2>
+		  				<svg id="volumeReverb">
+			  				<rect width="200" height="15" fill="white"></rect>
+			  			</svg>
+		  			</div>
+		  		</div>
+	  		</div>
+	  		<div id="grain">
+	  			<h2>Granulation <a target="_blank" href="https://en.wikipedia.org/wiki/Granular_synthesis">?</a></h2>
+	  			<div>
+		  			<div class="settings">
+		  				<div>
+			  				<label>Grain size</label>
+			  				<div class="svgcontainer">
+			  					<svg control="size">
+			  						<rect width="100%" height="1" y="16"></rect>
+			  						<circle cx="50%" r="7" cy="17"></rect>
+			  					</svg>
+			  				</div>
+			  			</div>
+			  			<div>
+			  				<label>Echo</label>
+			  				<div class="svgcontainer">
+			  					<svg control="feedback">
+			  						<rect width="100%" height="1" y="16"></rect>
+			  						<circle cx="50%" r="7" cy="17"></rect>
+			  					</svg>
+			  				</div>
+			  			</div>
+			  			<div>
+			  				<label>Clarity</label>
+			  				<div class="svgcontainer">
+			  					<svg control="random">
+			  						<rect width="100%" height="1" y="16"></rect>
+			  						<circle cx="50%" r="7" cy="17"></rect>
+			  					</svg>
+			  				</div>
+			  			</div>
+		  			</div>
+		  			<div class="volume">
+		  				<h2>Volume</h2>
+		  				<svg id="volumeGrain">
+			  				<rect width="200" height="15" fill="white"></rect>
+			  			</svg>
+		  			</div>
+		  		</div>
+	  		</div>
+	  	</div>
+	  	
+	  </div>
+
+	  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+	  <script src="scripts.js"></script>
+
+	</body>
+
+</html>
