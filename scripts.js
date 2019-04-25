@@ -424,12 +424,13 @@ $(function(){
 
 		$(this).on("touchstart", function(e){
 			if(multidelayOK){
-				$(this).find("circle").css("cx", e.touches[0].clientX - $(this)[0].getBoundingClientRect().left);
+				var val = Math.max(0, Math.min($(this).width(), e.touches[0].clientX - $(this)[0].getBoundingClientRect().left));
+				$(this).find("circle").css("cx", val);
 				if($(this).attr("control") == "size"){
-					delaySize = ((e.clientX - $(this)[0].getBoundingClientRect().left) / $(this).width()) * 0.9 + 0.1;
+					delaySize = (val / $(this).width()) * 0.9 + 0.1;
 					updateDelaySize();
 				}else if($(this).attr("control") == "feedback"){
-					feedbackDelay = (e.touches[0].clientX - $(this)[0].getBoundingClientRect().left) / $(this).width();
+					feedbackDelay = val / $(this).width();
 					feedbackDelay *= 0.9;
 					updateDelayFeedback();
 				}
@@ -439,13 +440,14 @@ $(function(){
 		$(this).on("mousedown", function(e){
 			mouseState = true;
 			if(multidelayOK){
-				$(this).find("circle").css("cx", e.clientX - $(this)[0].getBoundingClientRect().left);
+				var val = Math.max(0, Math.min($(this).width(), e.clientX - $(this)[0].getBoundingClientRect().left));
+				$(this).find("circle").css("cx", val);
 				
 				if($(this).attr("control") == "size"){
-					delaySize = ((e.clientX - $(this)[0].getBoundingClientRect().left) / $(this).width()) * 0.9 + 0.1;
+					delaySize = (val / $(this).width()) * 0.9 + 0.1;
 					updateDelaySize();
 				}else if($(this).attr("control") == "feedback"){
-					feedbackDelay = (e.clientX - $(this)[0].getBoundingClientRect().left) / $(this).width();
+					feedbackDelay =  val / $(this).width();
 					feedbackDelay *= 0.9;
 					updateDelayFeedback();
 				}
@@ -457,13 +459,14 @@ $(function(){
 
 		$(this).on("touchmove", function(e){
 			if(multidelayOK){
-				$(this).find("circle").css("cx", e.touches[0].clientX - $(this)[0].getBoundingClientRect().left);
+				var val = Math.max(0, Math.min($(this).width(), e.touches[0].clientX - $(this)[0].getBoundingClientRect().left));
+				$(this).find("circle").css("cx", val);
 				if($(this).attr("control") == "size"){
-					delaySize = ((e.clientX - $(this)[0].getBoundingClientRect().left) / $(this).width()) * 0.9 + 0.1;
+					delaySize = (val / $(this).width()) * 0.9 + 0.1;
 					delaySize
 					updateDelaySize();
 				}else if($(this).attr("control") == "feedback"){
-					feedbackDelay = (e.touches[0].clientX - $(this)[0].getBoundingClientRect().left) / $(this).width();
+					feedbackDelay = val / $(this).width();
 					feedbackDelay *= 0.9;
 					updateDelayFeedback();
 				}
@@ -473,12 +476,13 @@ $(function(){
 		$(this).on("mousemove", function(e){
 			if(multidelayOK){
 				if(mouseState){
-					$(this).find("circle").css("cx", e.clientX - $(this)[0].getBoundingClientRect().left);
+					var val = Math.max(0, Math.min($(this).width(), e.clientX - $(this)[0].getBoundingClientRect().left));
+					$(this).find("circle").css("cx", val);
 					if($(this).attr("control") == "size"){
-						delaySize = ((e.clientX - $(this)[0].getBoundingClientRect().left) / $(this).width()) * 0.9 + 0.1;
+						delaySize = (val / $(this).width()) * 0.9 + 0.1;
 						updateDelaySize();
 					}else if($(this).attr("control") == "feedback"){
-						feedbackDelay = (e.clientX - $(this)[0].getBoundingClientRect().left) / $(this).width();
+						feedbackDelay = val / $(this).width();
 						feedbackDelay *= 0.9;
 						updateDelayFeedback();
 					}
