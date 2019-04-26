@@ -5,6 +5,22 @@ body{
 	min-height : 100vh;
 }
 
+#download-link{
+	display : none;
+}
+
+.recordtoggle p span:first-of-type{
+	padding : 10px;
+	background-color : red;
+	color : white;
+	border-radius : 5px;
+	display : inline-block;
+	float:right;
+	cursor: pointer;
+	position: relative;
+  top: -8px;
+}
+
 .container{
 	width : 100%;
 }
@@ -138,7 +154,7 @@ button.on:hover, button.off:hover{
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	padding-top : 45px;
+	padding-top : 15px;
 }
 
 .settings{

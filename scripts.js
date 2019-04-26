@@ -2,7 +2,7 @@ $(function(){
 
 	if (location.protocol != 'https:')
 	{
-	 //location.href = 'https:' + window.location.href.substring(window.location.protocol.length);
+	 location.href = 'https:' + window.location.href.substring(window.location.protocol.length);
 	}
 
 	//Init
@@ -37,7 +37,8 @@ $(function(){
 	var feedbackGrain = 0.4;
 	var grainF = null;
 	var preDelay = 0;
-
+	var rec = null;
+	var recNode = null;
 
 	//
 
@@ -67,7 +68,11 @@ $(function(){
 				gains["volumeGrain"].gain.setValueAtTime(0.85, ctx.currentTime);
 				gains["volumeOutput"] = ctx.createGain();
 				gains["volumeOutput"].gain.setValueAtTime(0.85, ctx.currentTime);
-	
+				recNode = ctx.createGain();
+				gains["volumeOutput"].connect(recNode);
+				gains["volumeInput"].connect(recNode);
+		 		rec = new Recorder(recNode);
+
 				gains["volumeDelay"].connect(gains["volumeOutput"]);
 				gains["volumeGrain"].connect(gains["volumeOutput"]);
 				gains["volumeReverb"].connect(gains["volumeOutput"]);
@@ -80,6 +85,7 @@ $(function(){
     			});
 
 			}catch(e){
+				console.log(e);
 				displayError("Your browser isn't able to make work this page, try to update it or change for an other browser.");
 				$(".toggles button").off("click");
 				$(".toggles .item1").off("click");
@@ -117,8 +123,6 @@ $(function(){
 
 	function initGrain(){
 
-
-		initAudio();
 		if(ctx){
 			try {
 
@@ -209,9 +213,6 @@ $(function(){
 	}
 
 	function initDelays(){
-
-
-		initAudio();
 		if(ctx){
 			try {
 				for( var i = 0 ; i < 4 ; i++){
@@ -264,7 +265,8 @@ $(function(){
 			delaysGain[i].gain.linearRampToValueAtTime((Math.random() * 0.4) + 0.5, ctx.currentTime + 0.1);
 			var time = parseInt( delaysPos[i] * delaySize);
 			time = time - (time  % (60000 / (tempo * 4)));
-			delays[i].delayTime.linearRampToValueAtTime( time / 1000, ctx.currentTime + 0.1);
+			delays[i].delayTime.linearRampToValueAtTime( (time / 1000) + preDelay, ctx.currentTime + 0.1);
+			delayInit[i] = (time / 1000);
 		}
 	}
 
@@ -283,8 +285,6 @@ $(function(){
 	}
 
 	function initReverb(){
-
-		initAudio();
 		
 		if(ctx){
 			try {
@@ -647,6 +647,30 @@ $(function(){
 			gains[id].gain.linearRampToValueAtTime( value, ctx.currentTime + 0.1);
 		}
 	}
+
+	initAudio();
+
+	var record = false;
+	$(".recordtoggle span").on("click",function(){
+		if(!record){
+			$(".recordtoggle span").text("Stop");
+			$("#download-link").hide();
+			rec.record();
+			record = true;
+		}else{
+			$(".recordtoggle span").text("Record");
+			rec.stop();
+ 			rec.exportWAV(function(buffers){
+ 				console.log(buffers);
+ 				var url = URL.createObjectURL(buffers);
+ 				var link = $("#download-link");
+ 				link.css("display", "inline-block");
+		    link.attr("href", url);
+		    link.attr("download", "track.wav");
+		    link.trigger("click");
+ 			});
+		}
+	});
 
 
 });
