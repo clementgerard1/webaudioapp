@@ -2,7 +2,7 @@ $(function(){
 
 	if (location.protocol != 'https:')
 	{
-	 location.href = 'https:' + window.location.href.substring(window.location.protocol.length);
+	 //location.href = 'https:' + window.location.href.substring(window.location.protocol.length);
 	}
 
 	//Init
@@ -18,6 +18,7 @@ $(function(){
 	var delaysGain = [];
 	var delaysFeed = [];
 	var delaysPos = [];
+	var delayInit = [];
 	var delaySize = 0.5;
 	var tempo = 120;
 	var feedbackDelay = 0.4;
@@ -35,6 +36,7 @@ $(function(){
 	var grainRandom = 400;
 	var feedbackGrain = 0.4;
 	var grainF = null;
+	var preDelay = 0;
 
 
 	//
@@ -99,11 +101,11 @@ $(function(){
 								    	if(reverb && id==3){
 								    		reverb.buffer = irs[3];
 								    	}
+								    	count++;
+									    if(count == 6){
+									    	$(".loading").hide();
+									    }
 								    });
-								    count++;
-								    if(count == 6){
-								    	$(".loading").hide();
-								    }
 				        }
 				    }
 				};
@@ -216,10 +218,11 @@ $(function(){
 
 					delaysPos[i] = (Math.random() * 3900) + 100; // Random between 100 and 10000
 					if(typeof delays[i] === 'undefined'){
-						delays[i] = ctx.createDelay(4);
+						delays[i] = ctx.createDelay(4.5);
 						var time = parseInt( delaysPos[i] * delaySize);
 						time = time - (time  % (60000 / (tempo * 4)));
-						delays[i].delayTime.setValueAtTime( time / 1000, ctx.currentTime);
+						delays[i].delayTime.setValueAtTime( (time / 1000) + preDelay, ctx.currentTime);
+						delayInit[i] =  (time / 1000);
 						delaysFeed[i] = ctx.createGain();
 						delaysGain[i] = ctx.createGain();
 						delaysGain[i].gain.setValueAtTime((Math.random() * 0.4) + 0.5, ctx.currentTime);
@@ -433,6 +436,11 @@ $(function(){
 					feedbackDelay = val / $(this).width();
 					feedbackDelay *= 0.9;
 					updateDelayFeedback();
+				}else if($(this).attr("control") == "predelay"){
+					preDelay = (val / $(this).width()) * 0.5;
+					for(var i = 0 ; i < 4 ; i++){
+						delays[i].delayTime.setValueAtTime( delayInit[i] + preDelay, ctx.currentTime + 0.1);
+					}
 				}
 			}
 		});
@@ -450,6 +458,11 @@ $(function(){
 					feedbackDelay =  val / $(this).width();
 					feedbackDelay *= 0.9;
 					updateDelayFeedback();
+				}else if($(this).attr("control") == "predelay"){
+					preDelay = (val / $(this).width()) * 0.5;
+					for(var i = 0 ; i < 4 ; i++){
+						delays[i].delayTime.setValueAtTime( delayInit[i] + preDelay, ctx.currentTime + 0.1);
+					}
 				}
 			}
 		});
@@ -469,6 +482,11 @@ $(function(){
 					feedbackDelay = val / $(this).width();
 					feedbackDelay *= 0.9;
 					updateDelayFeedback();
+				}else if($(this).attr("control") == "predelay"){
+					preDelay = (val / $(this).width()) * 0.5;
+					for(var i = 0 ; i < 4 ; i++){
+						delays[i].delayTime.setValueAtTime( delayInit[i] + preDelay, ctx.currentTime + 0.1);
+					}
 				}
 			}
 		});
@@ -485,6 +503,11 @@ $(function(){
 						feedbackDelay = val / $(this).width();
 						feedbackDelay *= 0.9;
 						updateDelayFeedback();
+					}else if($(this).attr("control") == "predelay"){
+						preDelay = (val / $(this).width()) * 0.5;
+						for(var i = 0 ; i < 4 ; i++){
+							delays[i].delayTime.setValueAtTime( delayInit[i] + preDelay, ctx.currentTime + 0.1);
+						}
 					}
 				}
 			}
