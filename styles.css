@@ -6,7 +6,19 @@ body{
 }
 
 #download-link{
-	display : none;
+	display :inline-block;
+}
+
+#download-link.noactive{
+	color : grey;
+	pointer-events : none;
+	cursor: not-allowed;
+}
+
+#download-link.active{
+	color : auto;
+	pointer-events : auto;
+	cursor : pointer;
 }
 
 .recordtoggle p span:first-of-type{
@@ -19,6 +31,8 @@ body{
 	cursor: pointer;
 	position: relative;
   top: -8px;
+  width: 55.494px;
+  text-align:center;
 }
 
 .container{

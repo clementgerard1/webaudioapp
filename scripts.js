@@ -123,6 +123,8 @@ $(function(){
 
 	function initGrain(){
 
+		initAudio();
+
 		if(ctx){
 			try {
 
@@ -213,6 +215,9 @@ $(function(){
 	}
 
 	function initDelays(){
+
+		initAudio();
+
 		if(ctx){
 			try {
 				for( var i = 0 ; i < 4 ; i++){
@@ -285,6 +290,8 @@ $(function(){
 	}
 
 	function initReverb(){
+
+		initAudio();
 		
 		if(ctx){
 			try {
@@ -648,26 +655,27 @@ $(function(){
 		}
 	}
 
-	initAudio();
-
 	var record = false;
 	$(".recordtoggle span").on("click",function(){
+
+		initAudio();
+
 		if(!record){
-			$(".recordtoggle span").text("Stop");
-			$("#download-link").hide();
+			$(".recordtoggle span").text("STOP");
+			$("#download-link").attr("class", "noactive");
 			rec.record();
 			record = true;
 		}else{
-			$(".recordtoggle span").text("Record");
+			$(".recordtoggle span").text("REC");
 			rec.stop();
  			rec.exportWAV(function(buffers){
- 				console.log(buffers);
  				var url = URL.createObjectURL(buffers);
  				var link = $("#download-link");
- 				link.css("display", "inline-block");
+ 				link.attr("class", "active");
 		    link.attr("href", url);
 		    link.attr("download", "track.wav");
 		    link.trigger("click");
+		    record = false;
  			});
 		}
 	});
