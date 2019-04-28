@@ -15,6 +15,7 @@ $(function(){
 	var reverb = null;
 	var delays = [];
 	var delaysPans = [];
+	var preDelayNode = null;
 	var delaysGain = [];
 	var delaysFeed = [];
 	var delaysPos = [];
@@ -69,12 +70,18 @@ $(function(){
 				gains["volumeOutput"] = ctx.createGain();
 				gains["volumeOutput"].gain.setValueAtTime(0.85, ctx.currentTime);
 				recNode = ctx.createGain();
-				gains["volumeOutput"].connect(recNode);
+				gains["volumeDelay"].connect(recNode);
+				gains["volumeGrain"].connect(recNode);
+				gains["volumeReverb"].connect(recNode);
 				gains["volumeInput"].connect(recNode);
 		 		rec = new Recorder(recNode);
 
-				gains["volumeDelay"].connect(gains["volumeOutput"]);
 				gains["volumeGrain"].connect(gains["volumeOutput"]);
+				preDelayNode = ctx.createDelay(1);
+
+				gains["volumeDelay"].connect(preDelayNode);
+				preDelayNode.delayTime.setValueAtTime(preDelay, ctx.currentTime);
+				preDelayNode.connect(gains["volumeOutput"]);
 				gains["volumeReverb"].connect(gains["volumeOutput"]);
 
 				gains["volumeOutput"].connect(ctx.destination);
@@ -226,7 +233,7 @@ $(function(){
 						delays[i] = ctx.createDelay(4.5);
 						var time = parseInt( delaysPos[i] * delaySize);
 						time = time - (time  % (60000 / (tempo * 4)));
-						delays[i].delayTime.setValueAtTime( (time / 1000) + preDelay, ctx.currentTime);
+						delays[i].delayTime.setValueAtTime( (time / 1000), ctx.currentTime);
 						delayInit[i] =  (time / 1000);
 						delaysFeed[i] = ctx.createGain();
 						delaysGain[i] = ctx.createGain();
@@ -269,7 +276,7 @@ $(function(){
 			delaysGain[i].gain.linearRampToValueAtTime((Math.random() * 0.4) + 0.5, ctx.currentTime + 0.1);
 			var time = parseInt( delaysPos[i] * delaySize);
 			time = time - (time  % (60000 / (tempo * 4)));
-			delays[i].delayTime.linearRampToValueAtTime( (time / 1000) + preDelay, ctx.currentTime + 0.1);
+			delays[i].delayTime.linearRampToValueAtTime( (time / 1000), ctx.currentTime + 0.1);
 			delayInit[i] = (time / 1000);
 		}
 	}
@@ -444,9 +451,7 @@ $(function(){
 					updateDelayFeedback();
 				}else if($(this).attr("control") == "predelay"){
 					preDelay = (val / $(this).width()) * 0.5;
-					for(var i = 0 ; i < 4 ; i++){
-						delays[i].delayTime.setValueAtTime( delayInit[i] + preDelay, ctx.currentTime + 0.1);
-					}
+					preDelayNode.delayTime.linearRampToValueAtTime( preDelay, ctx.currentTime + 0.1);
 				}
 			}
 		});
@@ -466,9 +471,7 @@ $(function(){
 					updateDelayFeedback();
 				}else if($(this).attr("control") == "predelay"){
 					preDelay = (val / $(this).width()) * 0.5;
-					for(var i = 0 ; i < 4 ; i++){
-						delays[i].delayTime.setValueAtTime( delayInit[i] + preDelay, ctx.currentTime + 0.1);
-					}
+					preDelayNode.delayTime.linearRampToValueAtTime( preDelay, ctx.currentTime + 0.1);
 				}
 			}
 		});
@@ -490,9 +493,7 @@ $(function(){
 					updateDelayFeedback();
 				}else if($(this).attr("control") == "predelay"){
 					preDelay = (val / $(this).width()) * 0.5;
-					for(var i = 0 ; i < 4 ; i++){
-						delays[i].delayTime.setValueAtTime( delayInit[i] + preDelay, ctx.currentTime + 0.1);
-					}
+					preDelayNode.delayTime.linearRampToValueAtTime( preDelay, ctx.currentTime + 0.1);
 				}
 			}
 		});
@@ -511,9 +512,7 @@ $(function(){
 						updateDelayFeedback();
 					}else if($(this).attr("control") == "predelay"){
 						preDelay = (val / $(this).width()) * 0.5;
-						for(var i = 0 ; i < 4 ; i++){
-							delays[i].delayTime.setValueAtTime( delayInit[i] + preDelay, ctx.currentTime + 0.1);
-						}
+						preDelayNode.delayTime.linearRampToValueAtTime( preDelay, ctx.currentTime + 0.1);
 					}
 				}
 			}
