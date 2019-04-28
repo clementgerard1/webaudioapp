@@ -218,7 +218,17 @@ button.on:hover, button.off:hover{
 	overflow:visible;
 }
 
-.error, .loading{
+#credit{
+	color : blue;
+	text-decoration: underline;
+	cursor:pointer;
+}
+
+.credits h2{
+	margin-top : 10px;
+}
+
+.error, .loading, .credits{
 	position : absolute;
 	width : 100vw;
 	height : 100vh;
@@ -230,7 +240,7 @@ button.on:hover, button.off:hover{
 	background-color: rgba(255,255,255, 0.7);
 }
 
-.error > div{
+.error > div, .credits > div{
 	background-color : white;
 	border : 1px black solid;
 	width : 70%;

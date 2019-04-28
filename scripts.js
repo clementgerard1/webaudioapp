@@ -85,7 +85,6 @@ $(function(){
     			});
 
 			}catch(e){
-				console.log(e);
 				displayError("Your browser isn't able to make work this page, try to update it or change for an other browser.");
 				$(".toggles button").off("click");
 				$(".toggles .item1").off("click");
@@ -680,5 +679,14 @@ $(function(){
 		}
 	});
 
+	$("#credit").on("click", function(){
+		$(".credits").css("display", "flex");
+		setTimeout(function(){
+			var ev = $("body").on("click", function(event){
+				$(".credits").css("display", "none");
+				$("body").off(event);
+			});
+		}, 200);
+	})
 
 });
