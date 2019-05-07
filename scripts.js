@@ -232,7 +232,7 @@ $(function(){
 					if(typeof delays[i] === 'undefined'){
 						delays[i] = ctx.createDelay(4.5);
 						var time = parseInt( delaysPos[i] * delaySize);
-						time = time - (time  % (60000 / (tempo * 4)));
+						time = time - (time  % (60000 / (tempo * 2)));
 						delays[i].delayTime.setValueAtTime( (time / 1000), ctx.currentTime);
 						delayInit[i] =  (time / 1000);
 						delaysFeed[i] = ctx.createGain();
@@ -275,7 +275,7 @@ $(function(){
 			delaysPos[i] = (Math.random() * 3900) + 100;
 			delaysGain[i].gain.linearRampToValueAtTime((Math.random() * 0.4) + 0.5, ctx.currentTime + 0.1);
 			var time = parseInt( delaysPos[i] * delaySize);
-			time = time - (time  % (60000 / (tempo * 4)));
+			time = Math.max(60000 / (tempo * 2), time - (time  % (60000 / (tempo * 2))));
 			delays[i].delayTime.linearRampToValueAtTime( (time / 1000), ctx.currentTime + 0.1);
 			delayInit[i] = (time / 1000);
 		}
@@ -284,7 +284,7 @@ $(function(){
 	function updateDelaySize(){
 		for(var i = 0 ; i < 4 ; i++){
 			var time = parseInt( delaysPos[i] * delaySize);
-			time = time - (time  % (60000 / (tempo * 4)));
+			time = time - (time  % (60000 / (tempo * 2)));
 			delays[i].delayTime.linearRampToValueAtTime( time / 1000, ctx.currentTime + 0.1);
 		}
 	}
@@ -441,7 +441,7 @@ $(function(){
 		$(this).on("touchstart", function(e){
 			if(multidelayOK){
 				var val = Math.max(0, Math.min($(this).width(), e.touches[0].clientX - $(this)[0].getBoundingClientRect().left));
-				$(this).find("circle").css("cx", val);
+				$(this).find("circle").attr("cx", val);
 				if($(this).attr("control") == "size"){
 					delaySize = (val / $(this).width()) * 0.9 + 0.1;
 					updateDelaySize();
@@ -460,7 +460,7 @@ $(function(){
 			mouseState = true;
 			if(multidelayOK){
 				var val = Math.max(0, Math.min($(this).width(), e.clientX - $(this)[0].getBoundingClientRect().left));
-				$(this).find("circle").css("cx", val);
+				$(this).find("circle").attr("cx", val);
 				
 				if($(this).attr("control") == "size"){
 					delaySize = (val / $(this).width()) * 0.9 + 0.1;
@@ -482,7 +482,7 @@ $(function(){
 		$(this).on("touchmove", function(e){
 			if(multidelayOK){
 				var val = Math.max(0, Math.min($(this).width(), e.touches[0].clientX - $(this)[0].getBoundingClientRect().left));
-				$(this).find("circle").css("cx", val);
+				$(this).find("circle").attr("cx", val);
 				if($(this).attr("control") == "size"){
 					delaySize = (val / $(this).width()) * 0.9 + 0.1;
 					delaySize
@@ -502,7 +502,7 @@ $(function(){
 			if(multidelayOK){
 				if(mouseState){
 					var val = Math.max(0, Math.min($(this).width(), e.clientX - $(this)[0].getBoundingClientRect().left));
-					$(this).find("circle").css("cx", val);
+					$(this).find("circle").attr("cx", val);
 					if($(this).attr("control") == "size"){
 						delaySize = (val / $(this).width()) * 0.9 + 0.1;
 						updateDelaySize();
@@ -526,7 +526,7 @@ $(function(){
 		$(this).on("touchstart", function(e){
 			if(grainOK){
 				var val = Math.max(0, Math.min($(this).width(), e.touches[0].clientX - $(this)[0].getBoundingClientRect().left));
-				$(this).find("circle").css("cx", val);
+				$(this).find("circle").attr("cx", val);
 				if($(this).attr("control") == "size"){
 					grainSize = (val / $(this).width()) * 2900 + 100;
 				}else if($(this).attr("control") == "feedback"){
@@ -543,7 +543,7 @@ $(function(){
 			mouseState = true;
 			if(grainOK){
 				var val = Math.max(0, Math.min($(this).width(), e.clientX - $(this)[0].getBoundingClientRect().left));
-				$(this).find("circle").css("cx", val);
+				$(this).find("circle").attr("cx", val);
 				if($(this).attr("control") == "size"){
 					grainSize = (val / $(this).width()) * 2900 + 100;
 				}else if($(this).attr("control") == "feedback"){
@@ -562,7 +562,7 @@ $(function(){
 		$(this).on("touchmove", function(e){
 			if(grainOK){
 				var val = Math.max(0, Math.min($(this).width(), e.touches[0].clientX - $(this)[0].getBoundingClientRect().left));
-				$(this).find("circle").css("cx", val);
+				$(this).find("circle").attr("cx", val);
 				if($(this).attr("control") == "size"){
 					grainSize = (val / $(this).width()) * 2900 + 100;
 				}else if($(this).attr("control") == "feedback"){
@@ -579,7 +579,7 @@ $(function(){
 			if(mouseState){
 				if(grainOK){
 					var val = Math.max(0, Math.min($(this).width(), e.clientX - $(this)[0].getBoundingClientRect().left));
-					$(this).find("circle").css("cx", val);
+					$(this).find("circle").attr("cx", val);
 					if($(this).attr("control") == "size"){
 						grainSize = (val / $(this).width()) * 2900 + 100;
 					}else if($(this).attr("control") == "feedback"){
@@ -649,7 +649,7 @@ $(function(){
 		if(value != volumes[id]){
 			volumes[id] = value;
 			value = Math.pow(value, 3) * 1.2;
-			gains[id].gain.linearRampToValueAtTime( value, ctx.currentTime + 0.1);
+			gains[id].gain.linearRampToValueAtTime( value, ctx.currentTime + 1);
 		}
 	}
 
